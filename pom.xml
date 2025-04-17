@@ -7,36 +7,23 @@
         <artifactId>my-project</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <!-- artifactId should ideally match the module name/folder -->
     <artifactId>userService</artifactId>
     <name>User Service</name>
     <description>Micro-service for users</description>
-
     <packaging>jar</packaging>
-
-    <!-- Properties like java.version and spring-boot.version are inherited from parent -->
-    <!-- Properties specific to this module or overriding parent -->
     <properties>
-        <!-- You might not need java/springboot versions here if inherited -->
-        <!-- <java.version>21</java.version> -->
-        <!-- <spring-boot.version>3.2.4</spring-boot.version> -->
-        <!-- Keep specific versions like spring-cloud or jjwt if needed -->
-        <spring-cloud.version>2023.0.1</spring-cloud.version> <!-- Example, ensure it matches parent or remove if identical -->
+        <spring-cloud.version>2023.0.1</spring-cloud.version>
         <jjwt.version>0.11.5</jjwt.version>
-        <redis.version>3.2.4</redis.version> <!-- Manage Redis version -->
+        <redis.version>3.2.4</redis.version>
     </properties>
-
-    <!-- dependencyManagement for spring-cloud is now inherited from parent -->
-    <!-- You might remove the dependencyManagement block here if only inheriting -->
-
     <dependencies>
-        <!-- Spring Cloud Netflix Eureka Client (version managed by parent BOM) -->
+        <!-- Spring Cloud Netflix Eureka Client  -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
-        <!-- Spring Boot Starters (versions managed by parent BOM) -->
+        <!-- Spring Boot Starters  -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -68,7 +55,6 @@
             <artifactId>spring-boot-starter-actuator</artifactId> <!-- Recommended for health checks, etc. -->
         </dependency>
 
-        <!-- Lombok (version managed by parent, scope often 'provided') -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -102,7 +88,6 @@
     </dependencies>
 
     <build>
-        <!-- build section inherited from parent usually, unless specific config needed -->
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

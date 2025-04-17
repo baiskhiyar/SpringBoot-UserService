@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: UserService.UserServiceApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.960 s -- in UserService.UserServiceApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.968 s -- in UserService.UserServiceApplicationTests

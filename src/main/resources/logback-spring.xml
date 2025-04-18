@@ -18,23 +18,7 @@
     <!-- Standard Text Pattern -->
     <property name="LOG_PATTERN_TEXT" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n%ex{full}"/>
 
-
-    <!-- Appender 1: Rolling File Appender -->
-<!--    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
-<!--        <file>${LOG_FILE}</file>-->
-<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-<!--            &lt;!&ndash; daily rollover &ndash;&gt;-->
-<!--            <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
-<!--            &lt;!&ndash; keep 30 days' worth of history &ndash;&gt;-->
-<!--            <maxHistory>30</maxHistory>-->
-<!--            <totalSizeCap>3GB</totalSizeCap> &lt;!&ndash; Optional: Cap total size &ndash;&gt;-->
-<!--        </rollingPolicy>-->
-<!--        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
-<!--            <pattern>${LOG_PATTERN_TEXT}</pattern> &lt;!&ndash; Use TEXT pattern for file &ndash;&gt;-->
-<!--        </encoder>-->
-<!--    </appender>-->
-
-    <!-- Appender 2: Custom Kafka Appender -->
+    <!-- Appender : Custom Kafka Appender -->
     <appender name="KAFKA" class="UserService.logging.CustomKafkaLogbackAppender"> <!-- USE YOUR CORRECT PACKAGE NAME -->
         <!-- Encoder for formatting the message sent to Kafka -->
         <!-- Using TEXT pattern here. Switch to JSON if preferred (see pattern above and ensure dependency) -->
@@ -49,18 +33,18 @@
 
     <!-- Root Logger: Sends logs to both File and Kafka -->
     <root level="INFO"> <!-- Set the root level -->
-<!--        <appender-ref ref="FILE"/>-->
+        <appender-ref ref="FILE"/>
         <appender-ref ref="KAFKA"/>
         <!-- You might want to keep CONSOLE appender during development -->
         <!-- Find the default CONSOLE appender in base.xml or define one if needed -->
-        <!-- <appender-ref ref="CONSOLE"/> -->
+<!--         <appender-ref ref="CONSOLE"/>-->
     </root>
 
     <!-- Example: Set specific level for your application's packages -->
     <logger name="com.example.userService" level="DEBUG" additivity="false">
-<!--        <appender-ref ref="FILE"/>-->
+        <appender-ref ref="FILE"/>
         <appender-ref ref="KAFKA"/>
-        <!-- <appender-ref ref="CONSOLE"/> -->
+<!--         <appender-ref ref="CONSOLE"/>-->
     </logger>
 
     <!-- Suppress noisy loggers if needed -->

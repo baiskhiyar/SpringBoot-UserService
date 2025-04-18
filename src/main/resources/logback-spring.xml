@@ -12,11 +12,18 @@
     <!-- Standard Text Pattern for logs -->
     <property name="LOG_PATTERN_TEXT" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n%ex{full}"/>
 
-    <!-- Appender : Custom Kafka Appender -->
+    <!-- Appender : Custom Kafka Appender if, want to send logs as a text -->
+<!--    <appender name="KAFKA" class="UserService.logging.CustomKafkaLogbackAppender">-->
+<!--        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
+<!--            <pattern>${LOG_PATTERN_TEXT}</pattern>-->
+<!--            <charset>UTF-8</charset>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+    <!-- Appender : Custom Kafka Appender if, want to send logs as a json -->
+
     <appender name="KAFKA" class="UserService.logging.CustomKafkaLogbackAppender">
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>${LOG_PATTERN_TEXT}</pattern>
-            <charset>UTF-8</charset>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"app_name":"${APP_NAME}"}</customFields>
         </encoder>
     </appender>
 

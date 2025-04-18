@@ -9,25 +9,15 @@
     <springProperty scope="context" name="KAFKA_TOPIC" source="logging.kafka.topic" defaultValue="user-service-logs"/>
     <springProperty scope="context" name="APP_NAME" source="spring.application.name" defaultValue="user-service"/>
 
-    <!-- Define a standard pattern (you can customize this) -->
-    <!-- Consider JSON layout for easier parsing in FluentD/Elastic -->
-    <!-- Example JSON Layout (Requires logstash-logback-encoder dependency) -->
-    <!--
-    <property name="LOG_PATTERN_JSON" value='{"timestamp": "%d{yyyy-MM-dd HH:mm:ss.SSS}", "level": "%level", "thread": "%thread", "logger": "%logger{36}", "message": "%msg%n%ex{full}", "app_name": "${APP_NAME}"}'/>
-    -->
-    <!-- Standard Text Pattern -->
+    <!-- Standard Text Pattern for logs -->
     <property name="LOG_PATTERN_TEXT" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n%ex{full}"/>
 
     <!-- Appender : Custom Kafka Appender -->
-    <appender name="KAFKA" class="UserService.logging.CustomKafkaLogbackAppender"> <!-- USE YOUR CORRECT PACKAGE NAME -->
-        <!-- Encoder for formatting the message sent to Kafka -->
-        <!-- Using TEXT pattern here. Switch to JSON if preferred (see pattern above and ensure dependency) -->
+    <appender name="KAFKA" class="UserService.logging.CustomKafkaLogbackAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${LOG_PATTERN_TEXT}</pattern>
-            <!-- **** ADD THIS LINE **** -->
             <charset>UTF-8</charset>
         </encoder>
-        <!-- No Kafka connection details here; handled by KafkaLogProducer -->
     </appender>
 
 
@@ -35,22 +25,19 @@
     <root level="INFO"> <!-- Set the root level -->
         <appender-ref ref="FILE"/>
         <appender-ref ref="KAFKA"/>
-        <!-- You might want to keep CONSOLE appender during development -->
-        <!-- Find the default CONSOLE appender in base.xml or define one if needed -->
-<!--         <appender-ref ref="CONSOLE"/>-->
+         <appender-ref ref="CONSOLE"/>
     </root>
 
     <!-- Example: Set specific level for your application's packages -->
     <logger name="com.example.userService" level="DEBUG" additivity="false">
         <appender-ref ref="FILE"/>
         <appender-ref ref="KAFKA"/>
-<!--         <appender-ref ref="CONSOLE"/>-->
+         <appender-ref ref="CONSOLE"/>
     </logger>
 
     <!-- Suppress noisy loggers if needed -->
     <logger name="org.springframework" level="INFO"/>
     <logger name="org.hibernate" level="WARN"/>
     <logger name="org.apache.kafka" level="WARN"/> <!-- Quieten Kafka client logs if too verbose -->
-
 
 </configuration>

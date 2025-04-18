@@ -116,6 +116,7 @@
             <artifactId>logback-classic</artifactId>
         </dependency>
 
+        <!-- Dependency for formatting logging messages to json       -->
         <dependency>
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>

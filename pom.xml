@@ -3,27 +3,44 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
+        <!-- Make sure your parent pom reference is correct -->
         <groupId>com.example</groupId>
         <artifactId>my-project</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath/> <!-- Add this if the parent pom is not in the default location -->
     </parent>
     <artifactId>userService</artifactId>
+    <version>0.0.1-SNAPSHOT</version> <!-- It's good practice to have a version for the module itself -->
     <name>User Service</name>
     <description>Micro-service for users</description>
     <packaging>jar</packaging>
     <properties>
+        <java.version>17</java.version> <!-- Assuming Java 17+, adjust if needed -->
         <spring-cloud.version>2023.0.1</spring-cloud.version>
         <jjwt.version>0.11.5</jjwt.version>
-        <redis.version>3.2.4</redis.version>
+        <!-- Removed redis.version as Spring Boot manages it -->
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
-        <!-- Spring Cloud Netflix Eureka Client  -->
+        <!-- Spring Cloud Netflix Eureka Client -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
-        <!-- Spring Boot Starters  -->
+        <!-- Spring Boot Starters -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -47,27 +64,34 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId> <!-- Recommended for health checks, etc. -->
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
+        <!-- Kafka -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <scope>provided</scope> <!-- Changed scope -->
+            <optional>true</optional> <!-- Use optional=true for Lombok -->
         </dependency>
 
-        <!-- Redis json converter -->
+        <!-- Redis json converter (Already present) -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
-        <!-- JWT Dependencies (if used, keep specific versions) -->
+        <!-- JWT Dependencies -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -86,6 +110,7 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Logback (Implicitly included by spring-boot-starter, but explicit is fine) -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -98,12 +123,32 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!-- Configuration inherited or can be added here -->
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
             </plugin>
+            <!-- Ensure Java version is set if not inherited -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <!-- Configuration inherited or can be specified if different -->
+                <version>3.11.0</version> <!-- Use a recent version -->
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <!-- Ensure the version matches the one in dependencies -->
+                            <version>${lombok.version}</version> <!-- Define lombok.version property or use explicit version -->
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
         </plugins>
     </build>
